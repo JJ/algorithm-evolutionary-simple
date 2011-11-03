@@ -4,56 +4,51 @@ use warnings;
 use strict;
 use Carp;
 
-use version; $VERSION = qv('0.0.3');
+use version; our $VERSION = qv('0.0.3');
 
-# Other recommended modules (uncomment to use):
-#  use IO::Prompt;
-#  use Perl6::Export;
-#  use Perl6::Slurp;
-#  use Perl6::Say;
+use base 'Exporter';
+
+our @EXPORT_OK= qw( random_chromosome );
 
 
 # Module implementation here
+sub random_chromosome {
+  my $length = shift;
+  my $string = '';
+  for (1..$length) {
+    $string .= (rand >0.5)?1:0;
+  }
+  $string;
+}
 
-
-1; # Magic true value required at end of module
+"010101"; # Magic true value required at end of module
 __END__
 
 =head1 NAME
 
-Algorithm::Evolutionary::Simple - [One line description of module's purpose here]
+Algorithm::Evolutionary::Simple - A few auxiliary functions to run a simple EA in Perl
 
 
 =head1 VERSION
 
-This document describes Algorithm::Evolutionary::Simple version 0.0.1
+This document describes Algorithm::Evolutionary::Simple version 0.0.3
 
 
 =head1 SYNOPSIS
 
     use Algorithm::Evolutionary::Simple;
 
-=for author to fill in:
-    Brief code example(s) here showing commonest usage(s).
-    This section will be as far as many users bother reading
-    so make it as educational and exeplary as possible.
-  
-  
 =head1 DESCRIPTION
 
-=for author to fill in:
-    Write a full description of the module and its features here.
-    Use subsections (=head2, =head3) as appropriate.
+Assorted functions needed by an evolutionary algorithm app; just to get started
 
 
 =head1 INTERFACE 
 
-=for author to fill in:
-    Write a separate section listing the public components of the modules
-    interface. These normally consist of either subroutines that may be
-    exported, or methods that may be called on objects belonging to the
-    classes provided by the module.
+=head2 random_chromosome( length )
 
+Creates a binary chromosome, with uniform distribution of 0s and 1s,
+and returns it as a string.
 
 =head1 DIAGNOSTICS
 
