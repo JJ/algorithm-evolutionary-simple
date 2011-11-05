@@ -131,6 +131,11 @@ and returns it as a string.
 
 Classical function that returns the number of ones in a binary string.
 
+=head2 spin($wheel, $slots )
+
+Mainly for internal use, $wheel has the normalized probability, and
+    $slots  the number of individuals to return.
+ 
 =head2 get_pool_roulette_wheel( $population_arrayref, $fitness_of_hashref, $how_many_I_need )
 
 Obtains a pool of new chromosomes using fitness_proportional selection
