@@ -13,7 +13,7 @@ my %fitness_of;
 for (my $i = 0; $i < $number_of_strings; $i++) {
   $population[$i] = random_chromosome( $length);
   is( length($population[$i]), $length, "Ok length");
-  if ( $_ > 1 ){
+  if ( $i > 1 ){
     isnt( $population[$i], $population[$i-1], "Ok random");
   }
   $fitness_of{$population[$i]} = max_ones( $population[$i] );
