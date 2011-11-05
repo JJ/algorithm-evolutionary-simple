@@ -7,7 +7,7 @@ WriteMakefile(
     AUTHOR              => 'JJ Merelo <jj@merelo.net>',
     VERSION_FROM        => 'lib/Algorithm/Evolutionary/Simple.pm',
     ABSTRACT_FROM       => 'lib/Algorithm/Evolutionary/Simple.pm',
-    PL_FILES            => {},
+    EXE_FILES => [ 'app/simple-EA.pl' ],
     PREREQ_PM => {
         'Test::More' => 0,
         'version'    => 0,
