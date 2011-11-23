@@ -78,7 +78,7 @@ sub produce_offspring {
 
 sub mutate {
   my $chromosome = shift;
-  my $mutation_point = rand( length( $chromosome ));
+  my $mutation_point = int(rand( length( $chromosome )));
   substr($chromosome, $mutation_point, 1,
 	 ( substr($chromosome, $mutation_point, 1) eq 1 )?0:1 );
   return $chromosome;
