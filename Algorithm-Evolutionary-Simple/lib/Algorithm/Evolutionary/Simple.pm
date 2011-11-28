@@ -39,7 +39,6 @@ sub get_pool_roulette_wheel {
 
   my $total_fitness = 0;
   map(  $total_fitness += $fitness_of->{$_} , @$population );
-  my @best = rnkeytop { $fitness_of->{$_} } 2 => @$population;
   my @wheel = map( $fitness_of->{$_}/$total_fitness, @$population);
   my @slots = spin( \@wheel, scalar(@$population) );
   my @pool;
