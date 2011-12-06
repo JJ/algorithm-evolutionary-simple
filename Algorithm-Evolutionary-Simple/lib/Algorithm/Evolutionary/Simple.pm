@@ -10,7 +10,7 @@ use base 'Exporter';
 use Sort::Key::Top qw(rnkeytop) ;
 
 our @EXPORT_OK= qw( random_chromosome max_ones spin get_pool_roulette_wheel 
-		    produce_offspring mutate crossover );
+		    produce_offspring mutate crossover single_generation );
 
 
 # Module implementation here
@@ -96,6 +96,17 @@ sub crossover {
   return ( $chromosome_1, $chromosome_2 );
 }
 
+sub single_generation {
+  my $population = shift || croak "No population";
+  my $fitness_of = shift || croak "No fitness";
+  my $population_size = @{$population};
+  my @best = rnkeytop { $fitness_of->{$_} } 2 => @$population; # Extract elite
+  my @reproductive_pool = get_pool_roulette_wheel( $population, $fitness_of, $population_size ); # Reproduce
+  my @offspring = produce_offspring( \@reproductive_pool, $population_size - 2 ); #Obtain offspring
+  unshift( @offspring, @best ); #Insert elite
+  @offspring; # return
+}
+
 "010101"; # Magic true value required at end of module
 __END__
 
@@ -134,7 +145,12 @@ Classical function that returns the number of ones in a binary string.
 
 Mainly for internal use, $wheel has the normalized probability, and
     $slots  the number of individuals to return.
- 
+
+=head2 single_generation( $population_arrayref, $fitness_of_hashref )
+
+Applies all steps to arrive to a new generation, except
+evaluation. Keeps the two best for the next generation.
+
 =head2 get_pool_roulette_wheel( $population_arrayref, $fitness_of_hashref, $how_many_I_need )
 
 Obtains a pool of new chromosomes using fitness_proportional selection
