@@ -4,7 +4,7 @@ use warnings;
 use strict;
 use Carp qw(croak);
 
-our $VERSION = '0.0.4'; #Another attempt
+our $VERSION = '0.1.0'; # New function here
 
 use base 'Exporter';
 use Sort::Key::Top qw(rnkeytop) ;
@@ -103,7 +103,7 @@ sub single_generation {
   my @best = rnkeytop { $fitness_of->{$_} } 2 => @$population; # Extract elite
   my @reproductive_pool = get_pool_roulette_wheel( $population, $fitness_of, $population_size ); # Reproduce
   my @offspring = produce_offspring( \@reproductive_pool, $population_size - 2 ); #Obtain offspring
-  unshift( @offspring, @best ); #Insert elite
+  unshift( @offspring, @best ); #Insert elite at the beginning
   @offspring; # return
 }
 
@@ -122,7 +122,31 @@ This document describes Algorithm::Evolutionary::Simple version 0.0.3
 
 =head1 SYNOPSIS
 
-    use Algorithm::Evolutionary::Simple qw(max_ones random_chromosome);
+    use Algorithm::Evolutionary::Simple qw( random_chromosome max_ones 
+					get_pool_roulette_wheel produce_offspring single_generation);
+
+   my @population;
+   my %fitness_of;
+   for (my $i = 0; $i < $number_of_strings; $i++) {
+      $population[$i] = random_chromosome( $length);
+      $fitness_of{$population[$i]} = max_ones( $population[$i] );
+    }
+  
+    my @best;
+    my $generations=0;
+    do {
+        my @pool = get_pool_roulette_wheel( \@population, \%fitness_of, $number_of_strings );
+        my @new_pop = produce_offspring( \@pool, $number_of_strings/2 );
+        for my $p ( @new_pop ) {
+	    if ( !$fitness_of{$p} ) {
+	        $fitness_of{$p} = max_ones( $p );
+	    }
+        }
+       @best = rnkeytop { $fitness_of{$_} } $number_of_strings/2 => @population;
+       @population = (@best, @new_pop);
+       print "Best so far $best[0] with fitness $fitness_of{$best[0]}\n";	 
+   } while ( ( $generations++ < $number_of_generations ) and ($fitness_of{$best[0]} != $length ));
+
 
 =head1 DESCRIPTION
 
