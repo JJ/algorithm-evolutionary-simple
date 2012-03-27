@@ -4,7 +4,7 @@ use warnings;
 use strict;
 use Carp qw(croak);
 
-our $VERSION = '0.1.1'; # SofEA edition
+our $VERSION = '0.1.1a'; # Post-Sofea
 
 use base 'Exporter';
 use Sort::Key::Top qw(rnkeytop) ;
