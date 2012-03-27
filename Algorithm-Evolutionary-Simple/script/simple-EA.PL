@@ -7,12 +7,14 @@ use lib qw( ../lib lib );
 
 use version; our $VERSION = qv('0.0.3');
 use Algorithm::Evolutionary::Simple qw( random_chromosome max_ones 
-					get_pool_roulette_wheel produce_offspring );
+					get_pool_roulette_wheel get_pool_binary_tournament produce_offspring  );  
 use Sort::Key::Top qw(rnkeytop);
 
 my $length = shift || 64;
 my $number_of_strings = shift || 64;
 my $number_of_generations = shift || 100;
+my $pool = shift || "roulette";
+
 
 my @population;
 my %fitness_of;
@@ -20,11 +22,17 @@ for (my $i = 0; $i < $number_of_strings; $i++) {
   $population[$i] = random_chromosome( $length);
   $fitness_of{$population[$i]} = max_ones( $population[$i] );
 }
-  
+
+my $get_pool;
+if ( $pool eq "roulette" ) {
+  $get_pool = \&get_pool_roulette_wheel;
+}   else {
+  $get_pool = \&get_pool_binary_tournament;
+}
 my @best;
 my $generations=0;
 do {
-    my @pool = get_pool_roulette_wheel( \@population, \%fitness_of, $number_of_strings );
+    my @pool = $get_pool->( \@population, \%fitness_of, $number_of_strings );
     my @new_pop = produce_offspring( \@pool, $number_of_strings/2 );
     for my $p ( @new_pop ) {
 	if ( !$fitness_of{$p} ) {

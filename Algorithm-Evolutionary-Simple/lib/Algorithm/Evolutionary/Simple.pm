@@ -4,12 +4,13 @@ use warnings;
 use strict;
 use Carp qw(croak);
 
-our $VERSION = '0.1.0'; # New function here
+our $VERSION = '0.1.1'; # SofEA edition
 
 use base 'Exporter';
 use Sort::Key::Top qw(rnkeytop) ;
 
 our @EXPORT_OK= qw( random_chromosome max_ones spin get_pool_roulette_wheel 
+		    get_pool_binary_tournament
 		    produce_offspring mutate crossover single_generation );
 
 
@@ -48,6 +49,27 @@ sub get_pool_roulette_wheel {
     my $copies = $slots[$p];
     for (1..$copies) {
       push @pool, $population->[$p];
+    }
+  } while ( @pool < $need );
+  
+  @pool;
+}
+
+sub get_pool_binary_tournament {
+  my $population = shift || croak "No population here";
+  my $fitness_of = shift || croak "need stuff evaluated";
+  my $need = shift || croak "I need to know the new population size";
+
+  my $total_fitness = 0;
+  my @pool;
+  my $population_size = @$population;
+  do {
+    my $one = $population->[rand( $population_size )];
+    my $another = $population->[rand( $population_size )];
+    if ( $fitness_of->{$one} > $fitness_of->{$another} ) {
+      push @pool, $one;
+    } else {
+      push @pool, $another;
     }
   } while ( @pool < $need );
   

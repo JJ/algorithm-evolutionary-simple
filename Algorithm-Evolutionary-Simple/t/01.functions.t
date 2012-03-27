@@ -8,7 +8,8 @@ use lib qw( ../lib lib );
 
 use Sort::Key::Top qw(rnkeytop) ;
 use Algorithm::Evolutionary::Simple qw( random_chromosome max_ones 
-					get_pool_roulette_wheel produce_offspring single_generation);
+					get_pool_roulette_wheel get_pool_binary_tournament
+					produce_offspring single_generation);
 
 my $length = 32;
 my $number_of_strings = 32;
@@ -42,4 +43,12 @@ map( $fitness_of{$_}?$fitness_of{$_}:($fitness_of{$_} = max_ones( $_)), @newest_
 my @new_best = rnkeytop { $fitness_of{$_} } 1 => @newest_pop; # Extract elite
 is ( $fitness_of{$new_best[0]} >= $fitness_of{$old_best[0]}, 1, 
      "Improving fitness $fitness_of{$new_best[0]} >= $fitness_of{$old_best[0]}" );
+
+@pool = get_pool_binary_tournament( \@population, \%fitness_of, $number_of_strings );
+
+is ( scalar( @pool ), $number_of_strings, "Pool generation" );
+
+@new_pop = produce_offspring( \@pool, $number_of_strings );
+
+is ( scalar( @new_pop), $number_of_strings, "New population generation");
 done_testing();
