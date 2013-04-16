@@ -1,0 +1,103 @@
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-master: t
+%%% End: 
+
+\documentclass{article}
+\usepackage[ansinew]{inputenc}
+\usepackage{graphicx}
+\usepackage{color}
+
+\title{Experimentación con algoritmos distribuidos usando herramientas libres y gratuitas}
+
+\author{Dr. Juan Julián Merelo Guervós,\\
+Dra. Maribel García Arenas\\
+Dr. Rodolfo García Bermúdez y \\
+MSc. José Albert Cruz Almaguer 
+}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+En un entorno de restricción de costes para grandes instalaciones
+computacionales acompañado de la existencia de herramientas en la nube
+y ordenadores de sobremesa de altas capacidades, la experimentación
+con algoritmos distribuidos se puede hacer fácilmente combinando ambas
+cosas. En este trabajo se presenta una metodología de experimentación
+con algoritmos genéticos distribuidos usando servicios de
+almacenamiento en la nube tales como Dropbox (o alternativas libres
+auto-instalables) y aplicaciones para gestión de máquinas virtuales
+tales como VirtualBox. Usando el almacenamiento en la nube como un
+sistema de intercambio de soluciones entre los diferentes nodos, se
+tratará de probar la aplicabilidad de esta metodología así como probar
+las capacidades de estos nuevos algoritmos evolutivos distribuidos. 
+\end{abstract}
+
+\section{Introducción}
+
+La computación paralela no necesita ser complicada y prever escenarios
+complicados o grandes variaciones de estructura de los programas
+secuenciales. La mayor parte de los ordenadores actuales pueden
+trabajar cómodamente con muchos procesos ejecutándose simultáneamente
+y poseen sistemas de almacenamiento rápido que pueden usarse para
+intercambiar información. Implementar un algoritmo que funcione de
+forma concurrente es, por lo tanto, tan simple como ejecutar varios
+procesos simultáneamente y que intercambien información a través de un
+directorio especialmente designado para ello. La eficiencia de la
+implementación no tiene por qué ser grande (y dependerá sobre todo del
+tipo de procesador, del número de núcleos que posea y de la velocidad
+y eficiencia del sistema de ficheros) pero, sin embargo, la
+simplicidad en la programación es tal que puede compensar la menor
+ganancia en velocidad obtenida de esta forma. 
+
+Simultáneamente, está cada vez más vigente el uso de infraestructuras
+{\em nube} que permiten usar desde un ordenador conectado a la red
+diferentes recursos tales como CPUs virtuales o discos duros
+virtuales. El hecho de que sean {\em virtuales} implica que aparezcan,
+desde el punto de vista del interfaz de programación, como si se
+tratara de otras infraestructuras disponibles desde el sistema
+operativo. En la práctica, podemos usar un disco duro remoto situado
+en la nube como si se tratara de un disco duro local. De esta forma,
+también simple y transparente al programador podemos paralelizar un
+algoritmo, simplemente usando una infraestructura de almacenamiento
+virtual. A la vez, en algunos casos estas infraestructuras son
+gratuitas, bien por el hecho de que formen parte de la misma
+organización (discos conectados a la red, NAS o bien infraestructuras
+creadas con OpenStack u OpenNebula) o bien porque se trate de
+productos comerciales que poseen una versión gratuita, como se trata
+de Dropbox, Ubuntu One u otros. 
+
+En este trabajo mostramos la primera aproximación al uso de
+infraestructuras virtuales para la creación de experimentos de
+computación distribuida de forma gratuita. Estos experimentos los
+aplicaremos a un tipo de algoritmo denominado algoritmo genético. 
+
+Los algoritmos genéticos \cite{guervos2010informatica} son métodos de búsqueda y optimización
+inspirados en la selección natural propuesta por
+Darwin. Un algoritmo evolutivo codifica un problema en unas
+estructuras de datos generalmente denominadas {\em cromosomas} y que
+son una representación informática de los parámetros necesarios para
+resolverlo; por ejemplo, resolver el recorrido del viajante implicaría
+codificar en un {\em cromosoma} la lista de las ciudades a visitar; un
+problema que tuviera varios números reales como parámetros usaría una
+representación binaria con una precisión determinada de tales
+parámetros, esta representación binaria es la que se usa en muchos
+problemas numéricos y será la que usemos aquí por simple
+conveniencia. 
+
+
+\section{Estado del arte}
+
+\section{Experimentos}
+
+\section{Conclusiones}
+
+\section{Agradecimientos}
+
+\nocite{*}
+\bibliographystyle{plain}
+\bibliography{referencias}
+
+\end{document}

@@ -34,5 +34,5 @@ do
 	perl p-peaks-dr.pl $DIR/$i &
     done
     time perl p-peaks-dr.pl $DIR/$i 
-     touch $DIR/$i/END
+    touch $DIR/$i/END
 done
