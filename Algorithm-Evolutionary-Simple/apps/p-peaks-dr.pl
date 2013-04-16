@@ -1,7 +1,6 @@
 #!perl
 
-use strict;
-use warnings;
+use strict;use warnings;
 
 use lib qw( ../lib lib ../../../../proyectos/CPAN/Algorithm-Evolutionary/lib);
 
@@ -15,7 +14,7 @@ my $dr_dir = shift || die "Usage: $0 <Dropbox dir> [bits || 512] [strings || 256
 my $bits = shift || 512;
 my $number_of_strings = shift || 256;
 my $peaks = shift || 256;
-
+my $generations = shift || 10;
 
 my @population;
 my %fitness_of;
@@ -25,6 +24,7 @@ for (my $i = 0; $i < $number_of_strings; $i++) {
   $fitness_of{$population[$i]} = $p_peaks->p_peaks( $population[$i] );
 }
   
+my $count_generations = 0;
 my $evaluations=$#population+1; #rule of thumb
 do {
   @population = single_generation(  \@population, \%fitness_of  );
@@ -35,11 +35,31 @@ do {
   }
   $evaluations += $#population -1; # Two are kept from previous generation
   print "Best so far $population[0] with fitness $fitness_of{$population[0]} and evaluated $evaluations\n";
-  write_in_pool( \@population, \%fitness_of);
+  if ( $count_generations > $generations ) {
+    my ($new_dweller, $fitness) = get_from_pool();
+    if ( $new_dweller ) {
+      pop @population;
+      push @population, $new_dweller;
+      $fitness_of{ $new_dweller} = $fitness;
+    }
+    $count_generations = 0;
+    write_in_pool( \@population, \%fitness_of);
+  }
+  $count_generations++;
 } while  ($fitness_of{$population[0]} != $bits );
 
-#sub get_from_pool {
-#}
+sub get_from_pool {
+  my @files = glob( "$dr_dir/*.dat" );
+  if ( @files ) {
+    my $this_guy = $files[rand($#files)-2];
+    my ($fitness, $hexa_guy ) = ($this_guy =~ /$dr_dir.(.+?)_(\w+).dat/);
+    my $bit_vector = Bit::Vector->new_Hex( $bits, $hexa_guy );
+    print "Reading $fitness guy\n\n\n";
+    return ($bit_vector->to_Bin, $fitness);
+  } else {
+    return undef, undef;
+  }
+}
 
 sub write_in_pool {
   my $population = shift;
