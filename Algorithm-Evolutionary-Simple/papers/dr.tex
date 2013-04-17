@@ -4,16 +4,17 @@
 %%% End: 
 
 \documentclass{article}
-\usepackage[ansinew]{inputenc}
+\usepackage[latin1]{inputenc}
 \usepackage{graphicx}
 \usepackage{color}
+\usepackage{url}
 
-\title{ExperimentaciÃ³n con algoritmos distribuidos usando herramientas libres y gratuitas}
+\title{Experimentación con algoritmos distribuidos usando herramientas libres y gratuitas}
 
-\author{Dr. Juan JuliÃ¡n Merelo GuervÃ³s,\\
-Dra. Maribel GarcÃ­a Arenas\\
-Dr. Rodolfo GarcÃ­a BermÃºdez y \\
-MSc. JosÃ© Albert Cruz Almaguer 
+\author{Dr. Juan Julián Merelo Guervós,\\
+Dra. Maribel García Arenas\\
+Dr. Rodolfo García Bermúdez y \\
+MSc. José Albert Cruz Almaguer 
 }
 
 \begin{document}
@@ -21,83 +22,195 @@ MSc. JosÃ© Albert Cruz Almaguer
 \maketitle
 
 \begin{abstract}
-En un entorno de restricciÃ³n de costes para grandes instalaciones
-computacionales acompaÃ±ado de la existencia de herramientas en la nube
-y ordenadores de sobremesa de altas capacidades, la experimentaciÃ³n
-con algoritmos distribuidos se puede hacer fÃ¡cilmente combinando ambas
-cosas. En este trabajo se presenta una metodologÃ­a de experimentaciÃ³n
-con algoritmos genÃ©ticos distribuidos usando servicios de
+En un entorno de restricción de costes para grandes instalaciones
+computacionales acompañado de la existencia de herramientas en la nube
+y ordenadores de sobremesa de altas capacidades, la experimentación
+con algoritmos distribuidos se puede hacer fácilmente combinando ambas
+cosas. En este trabajo se presenta una metodología de experimentación
+con algoritmos genéticos distribuidos usando servicios de
 almacenamiento en la nube tales como Dropbox (o alternativas libres
-auto-instalables) y aplicaciones para gestiÃ³n de mÃ¡quinas virtuales
+auto-instalables) y aplicaciones para gestión de máquinas virtuales
 tales como VirtualBox. Usando el almacenamiento en la nube como un
 sistema de intercambio de soluciones entre los diferentes nodos, se
-tratarÃ¡ de probar la aplicabilidad de esta metodologÃ­a asÃ­ como probar
+tratará de probar la aplicabilidad de esta metodología así como probar
 las capacidades de estos nuevos algoritmos evolutivos distribuidos. 
 \end{abstract}
 
-\section{IntroducciÃ³n}
+\section{Introducción}
 
-La computaciÃ³n paralela no necesita ser complicada y prever escenarios
+La computación paralela no necesita ser complicada y prever escenarios
 complicados o grandes variaciones de estructura de los programas
 secuenciales. La mayor parte de los ordenadores actuales pueden
-trabajar cÃ³modamente con muchos procesos ejecutÃ¡ndose simultÃ¡neamente
-y poseen sistemas de almacenamiento rÃ¡pido que pueden usarse para
-intercambiar informaciÃ³n. Implementar un algoritmo que funcione de
+trabajar cómodamente con muchos procesos ejecutándose simultáneamente
+y poseen sistemas de almacenamiento rápido que pueden usarse para
+intercambiar información. Implementar un algoritmo que funcione de
 forma concurrente es, por lo tanto, tan simple como ejecutar varios
-procesos simultÃ¡neamente y que intercambien informaciÃ³n a travÃ©s de un
+procesos simultáneamente y que intercambien información a través de un
 directorio especialmente designado para ello. La eficiencia de la
-implementaciÃ³n no tiene por quÃ© ser grande (y dependerÃ¡ sobre todo del
-tipo de procesador, del nÃºmero de nÃºcleos que posea y de la velocidad
+implementación no tiene por qué ser grande (y dependerá sobre todo del
+tipo de procesador, del número de núcleos que posea y de la velocidad
 y eficiencia del sistema de ficheros) pero, sin embargo, la
-simplicidad en la programaciÃ³n es tal que puede compensar la menor
+simplicidad en la programación es tal que puede compensar la menor
 ganancia en velocidad obtenida de esta forma. 
 
-SimultÃ¡neamente, estÃ¡ cada vez mÃ¡s vigente el uso de infraestructuras
+Simultáneamente, está cada vez más vigente el uso de infraestructuras
 {\em nube} que permiten usar desde un ordenador conectado a la red
 diferentes recursos tales como CPUs virtuales o discos duros
 virtuales. El hecho de que sean {\em virtuales} implica que aparezcan,
-desde el punto de vista del interfaz de programaciÃ³n, como si se
+desde el punto de vista del interfaz de programación, como si se
 tratara de otras infraestructuras disponibles desde el sistema
-operativo. En la prÃ¡ctica, podemos usar un disco duro remoto situado
+operativo. En la práctica, podemos usar un disco duro remoto situado
 en la nube como si se tratara de un disco duro local. De esta forma,
-tambiÃ©n simple y transparente al programador podemos paralelizar un
+también simple y transparente al programador podemos paralelizar un
 algoritmo, simplemente usando una infraestructura de almacenamiento
 virtual. A la vez, en algunos casos estas infraestructuras son
 gratuitas, bien por el hecho de que formen parte de la misma
-organizaciÃ³n (discos conectados a la red, NAS o bien infraestructuras
+organización (discos conectados a la red, NAS o bien infraestructuras
 creadas con OpenStack u OpenNebula) o bien porque se trate de
-productos comerciales que poseen una versiÃ³n gratuita, como se trata
+productos comerciales que poseen una versión gratuita, como se trata
 de Dropbox, Ubuntu One u otros. 
 
-En este trabajo mostramos la primera aproximaciÃ³n al uso de
-infraestructuras virtuales para la creaciÃ³n de experimentos de
-computaciÃ³n distribuida de forma gratuita. Estos experimentos los
-aplicaremos a un tipo de algoritmo denominado algoritmo genÃ©tico. 
+En este trabajo mostramos la primera aproximación al uso de
+infraestructuras virtuales para la creación de experimentos de
+computación distribuida de forma gratuita. Estos experimentos los
+aplicaremos a un tipo de algoritmo denominado algoritmo genético. 
 
-Los algoritmos genÃ©ticos \cite{guervos2010informatica} son mÃ©todos de bÃºsqueda y optimizaciÃ³n
-inspirados en la selecciÃ³n natural propuesta por
+Los algoritmos genéticos \cite{guervos2010informatica} son métodos de búsqueda y optimización
+inspirados en la selección natural propuesta por
 Darwin. Un algoritmo evolutivo codifica un problema en unas
 estructuras de datos generalmente denominadas {\em cromosomas} y que
-son una representaciÃ³n informÃ¡tica de los parÃ¡metros necesarios para
-resolverlo; por ejemplo, resolver el recorrido del viajante implicarÃ­a
+son una representación informática de los parámetros necesarios para
+resolverlo; por ejemplo, resolver el recorrido del viajante implicaría
 codificar en un {\em cromosoma} la lista de las ciudades a visitar; un
-problema que tuviera varios nÃºmeros reales como parÃ¡metros usarÃ­a una
-representaciÃ³n binaria con una precisiÃ³n determinada de tales
-parÃ¡metros, esta representaciÃ³n binaria es la que se usa en muchos
-problemas numÃ©ricos y serÃ¡ la que usemos aquÃ­ por simple
+problema que tuviera varios números reales como parámetros usaría una
+representación binaria con una precisión determinada de tales
+parámetros, esta representación binaria es la que se usa en muchos
+problemas numéricos y será la que usemos aquí por simple
 conveniencia. 
+
+Un algoritmo genético necesita una función de adecuación o {\em
+  fitness} que nos permita evaluar lo que se acerca cada {\em
+  cromosoma} a la solución. Esta función permite comparar diferentes
+cromosomas y en principio y para simplificar, podemos pensar que es un
+solo número real, aunque puede ser un vector o incluso tratarse de una
+evaluación por parte de un usuario. La cuestión es que esta función
+nos debe permitir evaluar qué cromosoma codifica una mejor solución al
+problema que tratamos de resolver.
+
+Una vez establecidos estos dos componentes del algoritmo, un algoritmo
+evolutivo procede de la forma siguiente\begin{enumerate}
+\item Se general una población de cromosomas de tamaño $P$ y se evalúa
+\item Mientras no se cumpla una condición de terminación (número de
+  iteraciones, acercamiento a la solución o bien haber encontrado la
+  solución, por ejemplo)\begin{enumerate}
+  \item Escoger (de diferentes formas posibles) qué miembros de la
+    población van a reproducirse, es decir, ser transformados para
+    pasar a la siguiente iteración (denominada habitualmente {\em
+      generación}, por el símil con la evolución natural.
+  \item Cambiar una parte del cromosoma ({\em mutar}) o combinar dos
+    soluciones ({\em entrecruzamiento}) para dar una nueva generación
+    de cromosomas.
+  \item Evaluar los nuevos individuos. Insertar esta nueva población
+    en la población antigua, eliminando (en general) los peores. 
+  \end{enumerate}
+\end{enumerate}
+
+Desde el punto de vista de este trabajo, lo interesante de los
+algoritmos evolutivos es que se prestan a una fácil paralelización:
+simplemente dividiendo la población en varias {\em islas} y creando
+algún mecanismo de intercambio de individuos entre las islas.
+
+Esto es precisamente lo que vamos a hacer en este trabajo. Usaremos un
+algoritmo genético  que, dividido en varias {\em islas}, intercambiará
+información a través de un directorio compartido. Ese directorio
+compartido puede estar en un servicio tal como Dropbox, pero en este
+caso no haremos experimentos relacionados con esto. Trabajaremos
+además usando un sistema de fuentes abiertas en el que tanto el código
+como la experimentación como este mismo trabajo están a disposición
+de la comunidad científica desde el momento de su creación. 
+
+Con este trabajo tratamos de demostrar que, usando un mecanismo de
+intercambio a través de almacenamiento, se pueden conseguir mejoras de velocidad incluso en un
+sólo ordenador; para ello probaremos desde uno a cuatro
+procesos. Además, haremos ciertos experimentos preliminares que nos
+permitan saber qué políticas de migración son las más adecuadas.
+
+El resto del trabajo se organiza como sigue: a continuación exponemos
+los resultados más sobresalientes en este área. Posteriormente
+explicamos el algoritmo y la metodología de experimentación
+usada en la Sección \ref{sec:imp}. Finalmente expondremos los resultados obtenidos y las
+conclusiones derivadas de los mismos para terminar con algunas notas
+de trabajo futuro en la Sección \ref{sec:res}. 
 
 
 \section{Estado del arte}
 
-\section{Experimentos}
+\section{Detalles de implementación y experimentos}
+\label{sec:imp}
 
-\section{Conclusiones}
+Para hacer los experimentos se ha usado la librería {\tt
+  Algorithm::Evolutionary::Simple}, un módulo en Perl realizado por
+uno de los autores que permite crear un algoritmo genético rápidamente
+y en pocos pasos. La librería en Perl está optimizada para trabajar
+rápidamente \cite{DBLP:conf/iwann/MereloRACML11} a pesar de tratarse
+de un lenguaje interpretado como el Perl; Perl, por otro lado, resulta
+un lenguaje bastante adecuado para trabajar, en general, con
+algoritmos evolutivos teniendo una variedad de herramientas, algunas
+de las cuales han sido creadas por los autores de este trabajo
+\cite{perl-ea}.
+
+Para hacer los experimentos se ha buscado un problema que represente
+cierto reto para un algoritmo genético y cuya evaluación también
+requiera cierto tiempo, de forma que el algoritmo necesite un número
+de evaluaciones alto que pueda mejorarse a base de la
+paralelización. Por eso la función elegida ha sido P-Peaks
+\cite{alba2002comparing}. En esta función se general aleatoriamente un conjunto
+de $p$ cadenas binarias de longitud $b$. P-Peaks devuelve la distancia
+a la cadena {\em más cercana}, es decir, el mínimo de las distancias
+medida a todas las cadenas. La función resulta {\em pesada} porque hay
+que medir distancias a un número determinado de cadenas y resulta
+complicada para un algoritmo evolutivo al tener un número alto de
+máximos globales (correspondientes a cada una de las cadenas que se
+han generado). La implementación de esta función es también libre,
+está escrita en Perl y forma parte del módulo {\tt
+  Algorithm::Evolutionary} denominándose {\tt
+  Algorithm::Evolutionary::Fitness::P\_Peaks}. 
+
+
+Los parámetros base usados en el algoritmo evolutivo se muestran en la
+tabla \ref{tab:params}. En general, son los valores por omisión de la
+librería.  
+%
+\begin{table}[t!]
+\centering 
+\caption{Valores de los parámetros del algoritmo genético y de la
+  función P-Peaks usada. \label{tab:params}}
+\begin{tabular}{lc}
+\hline
+Parámetro & Valor \\
+\hline \\
+Selección & Rueda de ruleta \\
+Mutación & 1-bit \\
+Entrecruzamiento & 2 puntos \\
+$P$ (número de picos)  & 256 \\
+$b$ (bits del cromosoma)   & 512 \\ 
+Población base & 1024 \\
+\hline
+\end{tabular}
+\end{table}
+%
+
+\section{Resultados, conclusiones y trabajo futuro}
+\label{sec:res}
 
 \section{Agradecimientos}
+Este trabajo está apoyado por los proyectos 
+TIN2011-28627-C04-02 del Ministerio español de Ciencia y
+Competitividad y por el P08-TIC-03903 del gobierno regional andaluz,
+así como el proyecto 83 (CANUBE) concedido por el CEI-BioTIC UGR
+(\url{http://biotic.ugr.es}). 
 
-\nocite{*}
 \bibliographystyle{plain}
-\bibliography{referencias}
+\bibliography{dr,geneura}
 
 \end{document}

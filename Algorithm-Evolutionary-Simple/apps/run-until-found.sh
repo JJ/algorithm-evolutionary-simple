@@ -31,8 +31,8 @@ do
     for (( j=0; j < $PAR-1; j++ ))
     do
 	echo "Starting $j"
-	perl p-peaks-dr.pl $DIR/$i &
+	perl p-peaks-dr.pl $DIR/$i 512 128 &
     done
-    time perl p-peaks-dr.pl $DIR/$i 
+    time perl p-peaks-dr.pl $DIR/$i 512 128
     touch $DIR/$i/END
 done
