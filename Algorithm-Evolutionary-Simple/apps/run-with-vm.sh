@@ -21,7 +21,7 @@ do
     echo "Iteration $i in dir $DIR/$i with $PAR"
     mkdir $DIR/$i
     touch $DIR/$i/START
-    rsh jjmerelo@192.168.56.10 "cd progs/SimplEA/Algorithm-Evolutionary-Simple/apps; perl p-peaks-dr.pl $DIR/$i"  &
+    rsh jmerelo@192.168.56.21 "cd progs/SimplEA/Algorithm-Evolutionary-Simple/apps; perl p-peaks-dr.pl $DIR/$i"  &
     time perl p-peaks-dr.pl $DIR/$i 512 512
     touch $DIR/$i/END
 done
