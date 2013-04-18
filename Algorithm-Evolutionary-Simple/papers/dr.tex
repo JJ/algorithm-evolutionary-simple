@@ -11,10 +11,9 @@
 
 \title{Experimentación con algoritmos distribuidos usando herramientas libres y gratuitas}
 
-\author{Dr. Juan Julián Merelo Guervós,\\
-Dra. Maribel García Arenas\\
-Dr. Rodolfo García Bermúdez y \\
-MSc. José Albert Cruz Almaguer 
+\author{Dr. Juan Julián Merelo Guervós, Dra. Maribel García Arenas (Universidad de Granada)\\
+Dr. Rodolfo García Bermúdez (Universidad de Holguín) y \\
+MSc. José Albert Cruz Almaguer (Universidad de las Ciencias Informáticas, La Habana)
 }
 
 \begin{document}
@@ -144,6 +143,25 @@ de trabajo futuro en la Sección \ref{sec:res}.
 
 
 \section{Estado del arte}
+
+Los principales resultados en este área son de los mismos autores
+\cite{DBLP:conf/cec/ArenasGMCRL11,DBLP:conf/gecco/ArenasGCLRM11,mericloud}. En
+estos trabajos se usó un algoritmo evolutivo implementado en Java para
+probar diferentes sistemas gratuitos de almacenamiento en nube tales
+como Dropbox u otros. Como principal resultado se obtuvo el hecho de
+que se conseguían escalados interesantes, pero sólo con unas pocas
+máquinas. Además, el retraso en la propagación de los resultados de
+unas máquinas a otras implicaba que el problema de optimización debía
+de ser de cierto tamaño para que los resultados fueran
+significativos. El principal problema era que, debido a este retraso
+en la propagación, la migración introducía también un retraso en la
+ejecución del algoritm para que esta fuera capaz de propagarse. 
+
+En este trabajo principalmente tratamos de reproducir los resultados
+obtenidos en el mismo con otro tipo de implementación y, además,
+usando otra implemenatción diferente que tiene como principal
+diferencia el hecho de no tener en cuenta si el algoritmo se está
+ejecutando secuencialmente o conjuntamente con otros nodos. 
 
 \section{Detalles de implementación y experimentos}
 \label{sec:imp}
@@ -280,7 +298,7 @@ teóricamente, más rápido que en el primer caso.
 \includegraphics[scale=0.50]{tiempos-toshiba.png}
 \caption{Boxplot del tiempo medio (en segundos) necesario para
   terminar el algoritmo usando un programa secuencial y dos 
-  procesos simultáneos en un ordenador portátil.  \label{fig:sm}}
+  procesos simultáneos en un ordenador portátil.  \label{fig:toshiba}}
 \end{figure*} 
 
 Como se puede ver en ambas gráficas, el añadir nodos consigue rebajar
