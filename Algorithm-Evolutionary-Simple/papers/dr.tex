@@ -176,7 +176,6 @@ está escrita en Perl y forma parte del módulo {\tt
   Algorithm::Evolutionary} denominándose {\tt
   Algorithm::Evolutionary::Fitness::P\_Peaks}. 
 
-
 Los parámetros base usados en el algoritmo evolutivo se muestran en la
 tabla \ref{tab:params}. En general, son los valores por omisión de la
 librería.  
@@ -199,9 +198,103 @@ Población base & 1024 \\
 \end{tabular}
 \end{table}
 %
+Sin embargo, como se ha comentado, $P$ y $b$ han sido elegidos para
+hacer el trabajo suficientemente difícil como para que cada ejecución
+del algoritmo dure un tiempo considerable. Por otro lado, tratándose
+de un problema difícil, se ha escogido un tamaño grande de población
+para que el algoritmo sea capaz de encontrar la solución; con tamaños
+más pequeños de población (o subdivisiones del tamaño) se vio que en
+muchos casos el algoritmo se quedaba estancado y era incapaz de
+encontrar la solución.
+
+Para probar las prestaciones en paralelo del algoritmo se dividió la
+población en dos y entre cuatro y se probó con un número igual de
+procesos. Los procesos se lanzaban desde un guión de línea de órdenes
+de Linux de forma que eran más o menos simultáneos. Había un proceso
+{\em principal} y otros {\em secundarios}; la principal diferencia es
+que este proceso {\em principal} decide cuando comienza y termina cada
+algoritmo y se usa también para medir la duración de los mismos. Esto
+puede significar que, si la solución se encuentra por primera vez en
+alguno de los procesos secundarios, el programa puede continuar
+durante un tiempo adicional; sin embargo, no suele demorarse mucho
+dado que se intercambian cromosomas entre unos procesos y otros. El
+hacerlo así, además, evita que hagan falta mecanismos adicionales de
+comunicación del final que tengan que propagarse y simplifica la
+programación que, en realidad, es exactamente la misma para el
+programa secuencial y el paralelo. El tiempo de ejecución se mide
+simplemente a través de la diferencia en segundos entre el tiempo de
+creación de dos ficheros que se crear, precisamente, al comenzar y
+terminar este programa. 
+
+Para la versión paralela hace falta una {\em política de
+  migración}. En nuestro caso se ha elegido depositar un cromosoma
+aleatorio elegido entre el 50\% con más fitness y tomar, a la vez, uno
+aleatorio del directorio en el que lo han depositado el resto. El
+elegir uno aleatorio entre los mejores coincide con la política que
+suele obtener mejores resultados en modelos isla, según hemos podido
+establecer en el pasado \cite{jj:2008:PPSN}. De hecho, algunas pruebas
+hecha depositando el mejor en cada generación ha dado peores
+resultados, provocando que en la mayor parte de los casos no termine
+el algoritmo. La estrategia aleatoria, aparte de rápida (no necesita
+ordenar ni hacer ninguna otra operación) tiene la ventaja de la
+estrategia de depósito de chromosomas: no necesita tampoco llevar a
+cabo ningún cambio en el código para el caso paralelo.
+
+Tanto el código como el resultado de los experimentos (que
+analizaremos en la siguiente sección) están disponibles de forma
+abierta en la siguiente dirección:
+\url{https://code.launchpad.net/\~jjmerelo/simplea/trunk}. El objetivo
+es que la comunidad científica se beneficie de esta ciencia abierta no
+sólo en los resultados, sino también en los datos que podrán ser, en
+caso de desearlo, analizados de forma indepenciente. 
 
 \section{Resultados, conclusiones y trabajo futuro}
 \label{sec:res}
+
+Los experimentos se ejecutaron 10 veces. En todos los casos se
+encontró la solución, salvo en el caso en el que se hizo con cuatro
+nodos, en el que acabó sólo en 6 ocasiones. En todo caso, los
+resultados se muestran sobre los que efectivamente terminaron.
+
+El primer resultado es que efectivamente, a pesar de ejecutarse en un
+sólo ordenador y cargar la tabla de procesos del mismo, se consigue
+una mejora en la velocidad con el número de {\em nodos}. Esto se
+muestra en las Figuras \ref{fig:sm} y \ref{fig:toshiba}; en el primer
+caso los tiempos han sido tomados en un ordenador AMD con séxtuple
+núcleo ejecutando Ubuntu 12.04; en el segundo es un portátil Toshiba
+Portegé ejecutando el mismo sistema operativo y con un Intel i5 de
+procesador; en este caso el disco duro es un SSD lo que lo hace,
+teóricamente, más rápido que en el primer caso.
+%
+\begin{figure*}[!htb]
+\centering
+\includegraphics[scale=0.50]{tiempos.png}
+\caption{Boxplot del tiempo medio (en segundos) necesario para
+  terminar el algoritmo usando un programa secuencial y dos y cuatro
+  procesos simultáneos.  Los tiempos han sido tomados en un ordenador
+  de sobremesa. \label{fig:sm}}
+\end{figure*} 
+%
+\begin{figure*}[!htb]
+\centering
+\includegraphics[scale=0.50]{tiempos-toshiba.png}
+\caption{Boxplot del tiempo medio (en segundos) necesario para
+  terminar el algoritmo usando un programa secuencial y dos 
+  procesos simultáneos en un ordenador portátil.  \label{fig:sm}}
+\end{figure*} 
+
+Como se puede ver en ambas gráficas, el añadir nodos consigue rebajar
+el tiempo necesario para hallar la solución. De hecho, parte de esta
+mejora se debe al hecho de que se usen menos individuos en la
+población; pero una parte también se debe a que se están evaluando
+simultáneamente más individuos. De hecho, la mejora para cuatro nodos
+es de un 70\% en la velocidad en el primer caso, mientras que la
+mejora para dos nodos es de un 40\% en el segundo caso, algo mejor en
+el primer caso. Esto, en parte, puede deberse al hecho de que
+realmente no nos preocupamos de cuando halla la solución cualquier
+nodo, sino sólo cuando la halla uno de ellos; pero en parte también a
+que se nota la carga del sistema al ejecutar varios procesos
+simultáneamente, sea en la CPU sea en entrada salida. 
 
 \section{Agradecimientos}
 Este trabajo está apoyado por los proyectos 
