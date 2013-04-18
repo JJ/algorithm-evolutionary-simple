@@ -161,7 +161,8 @@ En este trabajo principalmente tratamos de reproducir los resultados
 obtenidos en el mismo con otro tipo de implementación y, además,
 usando otra implemenatción diferente que tiene como principal
 diferencia el hecho de no tener en cuenta si el algoritmo se está
-ejecutando secuencialmente o conjuntamente con otros nodos. 
+ejecutando secuencialmente o conjuntamente con otros nodos. Veremos en
+la sección siguiente estos detalles de implementación. 
 
 \section{Detalles de implementación y experimentos}
 \label{sec:imp}
@@ -286,7 +287,7 @@ teóricamente, más rápido que en el primer caso.
 %
 \begin{figure*}[!htb]
 \centering
-\includegraphics[scale=0.50]{tiempos.png}
+\includegraphics[scale=0.45]{tiempos.png}
 \caption{Boxplot del tiempo medio (en segundos) necesario para
   terminar el algoritmo usando un programa secuencial y dos y cuatro
   procesos simultáneos.  Los tiempos han sido tomados en un ordenador
@@ -295,10 +296,20 @@ teóricamente, más rápido que en el primer caso.
 %
 \begin{figure*}[!htb]
 \centering
-\includegraphics[scale=0.50]{tiempos-toshiba.png}
+\includegraphics[scale=0.45]{tiempos-toshiba.png}
 \caption{Boxplot del tiempo medio (en segundos) necesario para
   terminar el algoritmo usando un programa secuencial y dos 
   procesos simultáneos en un ordenador portátil.  \label{fig:toshiba}}
+\end{figure*} 
+%
+\begin{figure*}[!htb]
+\centering
+\includegraphics[scale=0.45]{evolucion-fitness.png}
+\caption{Evolución del fitness de una instancia de cada uno de los
+  tres experimentos; los círculos indican el experimento con un solo
+  proceso, los triángulos con dos y las cruces con 4 procesos. El
+  tiempo en el eje de abscisas es el tiempo real; el fitness máximo es
+  512.  \label{fig:fit}}
 \end{figure*} 
 
 Como se puede ver en ambas gráficas, el añadir nodos consigue rebajar
@@ -312,7 +323,48 @@ el primer caso. Esto, en parte, puede deberse al hecho de que
 realmente no nos preocupamos de cuando halla la solución cualquier
 nodo, sino sólo cuando la halla uno de ellos; pero en parte también a
 que se nota la carga del sistema al ejecutar varios procesos
-simultáneamente, sea en la CPU sea en entrada salida. 
+simultáneamente, sea en la CPU sea en entrada salida.  De hecho, en el
+primer caso las tres diferencias son significativas usando el test no
+paramétrico de Wilcoxon, mientras que en el segundo caso la diferencia
+no es significativa. Esto puede significar que la mayor velocidad del
+disco duro haga que la diferencia entre uno y otro sea menor al
+dedicar menos tiempo al escribir en disco; esto podría indicar que uno
+de los factores que influyen en el tiempo es el tiempo empleado en
+leer del sistema de ficheros. Habrá que evaluar mediante un profiler
+este tipo de hipótesis para probar si es cierta o no, aunque una
+evaluación preliminar indica que el tiempo invertido en leer y
+escribir del disco duro es tres órdenes de magnitud inferior al tiempo
+total del programa. 
+
+Por otro lado, en el primer caso se puede ver en la figura
+\ref{fig:fit} la evolución procede de forma bien diferente dependiendo
+del número de procesos. En este caso lo que se traza para cada número
+de procesos es el tiempo de creación del fichero co el individuo que
+se está migrando tomado directamente del sistema de ficheros; el
+tiempo tiene resolución de segundos; esto es una ventaja adicional de
+usar este sistema, que te permite ver la evolución, con el tiempo, del
+fitness. Si recordamos que en realidad el que se graba es un individuo
+aleatorio entre los 50\% mejores, vemos que, en todo caso y para un
+tiempo determinado, por ejemplo 10 segundos, cuando hay 4 nodos se ha
+avanzado mucho más que cuando se usan dos o un solo nodo; esto prueba
+que el algoritmo evolutivo se puede paralelizar usando este simple
+mecanismo que es, también, extensible a sistemas qeu permitan
+almacenamiento transparente en la nube como Dropbox, tal como
+queríamos probar.
+
+Adicionalmente hemos hecho alguna prueba con directorios compartidos a
+través de Dropbox y alojados en diferentes máquinas virtuales dentro
+del mismo ordenador. Esto presenta una serie de retos, el principal
+que la velocidad de tales máquinas virtuales va a ser muy diferente y
+continuando con el problema del retraso en la aparición de los
+ficheros individuales en el resto de los nodos. Sin embargo, algunas
+pruebas iniciales (que se pueden ver en el repositorio de código y
+datos indicados) indican que, aunque se consiguen ciertas mejoras al
+añadir un nuevo nodo, no está claro que sean significativas, por lo
+que hay que avanzar haciendo experimentos en este sentido, probando
+con diferentes configuraciones, máquinas virtuales y parametrización
+de las mismas. Esto es algo que se propone como trabajo futuro.
+
 
 \section{Agradecimientos}
 Este trabajo está apoyado por los proyectos 
