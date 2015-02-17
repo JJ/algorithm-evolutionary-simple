@@ -1,6 +1,6 @@
-Algorithm-Evolutionary-Simple version 0.0.3
+#Algorithm-Evolutionary-Simple version 0.0.3
 
-INSTALLATION
+##INSTALLATION
 
 To install this module, run the following commands:
 
@@ -10,11 +10,11 @@ To install this module, run the following commands:
 	make install
 
 
-DEPENDENCIES
+##DEPENDENCIES
 
 As shown in the Makefile.PL file; mainly Sort::Key::Top.
 
-SYNOPSIS
+##SYNOPSIS
 
 Very simple evolutionary algorithm in Perl, mainly with pedagogical
 purposes. Once installed, use the provided functions or run
@@ -22,7 +22,7 @@ simple-EA.pl
 
 
 
-COPYRIGHT AND LICENCE
+##COPYRIGHT AND LICENCE
 
 Copyright (C) 2011, JJ Merelo
 
