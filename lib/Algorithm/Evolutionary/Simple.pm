@@ -9,7 +9,7 @@ our $VERSION = '0.1.1a'; # Post-Sofea
 use base 'Exporter';
 use Sort::Key::Top qw(rnkeytop) ;
 
-our @EXPORT_OK= qw( random_chromosome max_ones spin get_pool_roulette_wheel 
+our @EXPORT_OK= qw( random_chromosome max_ones max_ones_fast spin get_pool_roulette_wheel 
 		    get_pool_binary_tournament
 		    produce_offspring mutate crossover single_generation );
 
@@ -31,6 +31,11 @@ sub max_ones {
     $count += chop($str);
   }
   $count;
+}
+
+
+sub max_ones_fast {
+  ($_[0] =~ tr/1/-/);
 }
 
 sub get_pool_roulette_wheel {

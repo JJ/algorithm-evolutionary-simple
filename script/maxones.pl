@@ -1,11 +1,11 @@
-#!perl
+#!/usr/bin/env perl
 
 use strict;
 use warnings;
 
 use lib qw( ../lib lib );
 
-use version; our $VERSION = qv('0.0.1');
+use version; our $VERSION = qv('0.0.3');
 use Algorithm::Evolutionary::Simple qw( random_chromosome max_ones 
 					single_generation);
 use Sort::Key::Top qw(rnkeytop);
