@@ -16,6 +16,7 @@ my $number_of_strings = 32;
 
 my @population;
 my %fitness_of;
+my $total_fitness;
 for (my $i = 0; $i < $number_of_strings; $i++) {
   $population[$i] = random_chromosome( $length);
   is( length($population[$i]), $length, "Ok length");
@@ -23,11 +24,12 @@ for (my $i = 0; $i < $number_of_strings; $i++) {
     isnt( $population[$i], $population[$i-1], "Ok random");
   }
   $fitness_of{$population[$i]} = max_ones( $population[$i] );
+  $total_fitness += $fitness_of{$population[$i]};
   my $count_ones = grep( $_ eq 1, split(//, $population[$i]));
   is( $fitness_of{$population[$i]}, $count_ones, "Counting ones" );
 }
 
-my @pool = get_pool_roulette_wheel( \@population, \%fitness_of, $number_of_strings );
+my @pool = get_pool_roulette_wheel( \@population, \%fitness_of, $number_of_strings, $total_fitness );
 
 is ( scalar( @pool ), $number_of_strings, "Pool generation" );
 
@@ -36,8 +38,9 @@ my @new_pop = produce_offspring( \@pool, $number_of_strings );
 is ( scalar( @new_pop), $number_of_strings, "New population generation");
 
 map( $fitness_of{$_}?$fitness_of{$_}:($fitness_of{$_} = max_ones( $_)), @new_pop );
-
-my @newest_pop = single_generation( \@new_pop, \%fitness_of );
+$total_fitness = 0;
+map( $total_fitness += $fitness_of{$_}, @new_pop );
+my @newest_pop = single_generation( \@new_pop, \%fitness_of, $total_fitness );
 my @old_best = rnkeytop { $fitness_of{$_} } 1 => @new_pop; # Extract elite
 map( $fitness_of{$_}?$fitness_of{$_}:($fitness_of{$_} = max_ones( $_)), @newest_pop );
 my @new_best = rnkeytop { $fitness_of{$_} } 1 => @newest_pop; # Extract elite
