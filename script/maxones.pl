@@ -6,7 +6,7 @@ use warnings;
 use lib qw( ../lib lib );
 
 use version; our $VERSION = qv('0.0.3');
-use Algorithm::Evolutionary::Simple qw( random_chromosome max_ones 
+use Algorithm::Evolutionary::Simple qw( random_chromosome max_ones_fast
 					single_generation);
 use Sort::Key::Top qw(rnkeytop);
 
@@ -15,20 +15,25 @@ my $number_of_strings = shift || 64;
 
 my @population;
 my %fitness_of;
+my $total_fitness;
 for (my $i = 0; $i < $number_of_strings; $i++) {
   $population[$i] = random_chromosome( $length);
-  $fitness_of{$population[$i]} = max_ones( $population[$i] );
+  $fitness_of{$population[$i]} = max_ones_fast( $population[$i] );
+  $total_fitness += $fitness_of{$population[$i]};
 }
   
 my $evaluations=$#population+1;
+
 do {
-  @population = single_generation(  \@population, \%fitness_of  );
-  for my $p ( @population ) {
+    @population = single_generation(  \@population, \%fitness_of, $total_fitness  );
+    $total_fitness = 0;
+    for my $p ( @population ) {
 	if ( !$fitness_of{$p} ) {
-	    $fitness_of{$p} = max_ones( $p );
+	    $fitness_of{$p} = max_ones_fast( $p );
 	}
+	$total_fitness += $fitness_of{$p};
     }
-  $evaluations += $#population -1; # Two are kept from previous generation
+    $evaluations += $#population -1; # Two are kept from previous generation
     print "Best so far $population[0] with fitness $fitness_of{$population[0]} and evaluated $evaluations\n";	 
 } while  ($fitness_of{$population[0]} != $length );
 

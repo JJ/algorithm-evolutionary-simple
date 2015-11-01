@@ -35,18 +35,18 @@ sub max_ones {
 
 
 sub max_ones_fast {
-  ($_[0] =~ tr/1/-/);
+  ($_[0] =~ tr/1/1/);
 }
 
 sub get_pool_roulette_wheel {
   my $population = shift || croak "No population here";
   my $fitness_of = shift || croak "need stuff evaluated";
   my $need = shift || croak "I need to know the new population size";
+  my $total_fitness = shift || croak "I need the total fitness";
 
-  my $total_fitness = 0;
-  map(  $total_fitness += $fitness_of->{$_} , @$population );
   my @wheel = map( $fitness_of->{$_}/$total_fitness, @$population);
-  my @slots = spin( \@wheel, scalar(@$population) );
+  my $slots = scalar(@$population);
+  my @slots = map( $_*$slots, @wheel );;
   my @pool;
   my $index = 0;
   do {
@@ -126,9 +126,11 @@ sub crossover {
 sub single_generation {
   my $population = shift || croak "No population";
   my $fitness_of = shift || croak "No fitness";
+  my $total_fitness = shift;
   my $population_size = @{$population};
   my @best = rnkeytop { $fitness_of->{$_} } 2 => @$population; # Extract elite
-  my @reproductive_pool = get_pool_roulette_wheel( $population, $fitness_of, $population_size ); # Reproduce
+  my @reproductive_pool = get_pool_roulette_wheel( $population, $fitness_of, 
+						   $population_size, $total_fitness ); # Reproduce
   my @offspring = produce_offspring( \@reproductive_pool, $population_size - 2 ); #Obtain offspring
   unshift( @offspring, @best ); #Insert elite at the beginning
   @offspring; # return
