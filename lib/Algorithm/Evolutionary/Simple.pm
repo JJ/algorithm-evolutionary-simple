@@ -141,18 +141,18 @@ __END__
 
 =head1 NAME
 
-Algorithm::Evolutionary::Simple - A few auxiliary functions to run a simple EA in Perl
+Algorithm::Evolutionary::Simple - Run a simple, canonical evolutionary algorithm in Perl
 
 
 =head1 VERSION
 
-This document describes Algorithm::Evolutionary::Simple version 0.0.3
+This document describes Algorithm::Evolutionary::Simple version 0.1.1a
 
 
 =head1 SYNOPSIS
 
-    use Algorithm::Evolutionary::Simple qw( random_chromosome max_ones 
-					get_pool_roulette_wheel produce_offspring single_generation);
+    use Algorithm::Evolutionary::Simple qw( random_chromosome max_ones max_ones_fast
+					get_pool_roulette_wheel get_pool_binary_tournament produce_offspring single_generation);
 
    my @population;
    my %fitness_of;
@@ -164,7 +164,12 @@ This document describes Algorithm::Evolutionary::Simple version 0.0.3
     my @best;
     my $generations=0;
     do {
-        my @pool = get_pool_roulette_wheel( \@population, \%fitness_of, $number_of_strings );
+        my @pool; 
+        if ( $generations % 2 == 1 ) { 
+           get_pool_roulette_wheel( \@population, \%fitness_of, $number_of_strings );
+        } else {
+          get_pool_binary_tournament( \@population, \%fitness_of, $number_of_strings );
+        }
         my @new_pop = produce_offspring( \@pool, $number_of_strings/2 );
         for my $p ( @new_pop ) {
 	    if ( !$fitness_of{$p} ) {
@@ -179,8 +184,7 @@ This document describes Algorithm::Evolutionary::Simple version 0.0.3
 
 =head1 DESCRIPTION
 
-Assorted functions needed by an evolutionary algorithm app; just to
-    get started. 
+Assorted functions needed by an evolutionary algorithm, mainly for demos and simple clients.
 
 
 =head1 INTERFACE 
@@ -193,6 +197,11 @@ and returns it as a string.
 =head2 max_ones( $string )
 
 Classical function that returns the number of ones in a binary string.
+
+
+=head2 max_ones_fast( $string )
+
+Faster implementation of max_ones.
 
 =head2 spin($wheel, $slots )
 
@@ -207,6 +216,11 @@ evaluation. Keeps the two best for the next generation.
 =head2 get_pool_roulette_wheel( $population_arrayref, $fitness_of_hashref, $how_many_I_need )
 
 Obtains a pool of new chromosomes using fitness_proportional selection
+
+
+=head2 get_pool_binary_tournament( $population_arrayref, $fitness_of_hashref, $how_many_I_need )
+
+Obtains a pool of new chromosomes using binary tournament, a greedier method.
 
 =head2 produce_offspring( $population_hashref, $how_many_I_need )
 
