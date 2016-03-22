@@ -4,15 +4,14 @@ use warnings;
 use strict;
 use Carp qw(croak);
 
-our $VERSION = '0.1.1a'; # Post-Sofea
+our $VERSION = '0.1.2'; # Post-Sofea
 
 use base 'Exporter';
 use Sort::Key::Top qw(rnkeytop) ;
 
-our @EXPORT_OK= qw( random_chromosome max_ones max_ones_fast spin get_pool_roulette_wheel 
-		    get_pool_binary_tournament
+our @EXPORT_OK= qw( random_chromosome max_ones max_ones_fast spin 
+		    get_pool_roulette_wheel get_pool_binary_tournament
 		    produce_offspring mutate crossover single_generation );
-
 
 # Module implementation here
 sub random_chromosome {
@@ -45,8 +44,9 @@ sub get_pool_roulette_wheel {
   my $total_fitness = shift || croak "I need the total fitness";
 
   my @wheel = map( $fitness_of->{$_}/$total_fitness, @$population);
-  my $slots = scalar(@$population);
-  my @slots = map( $_*$slots, @wheel );;
+  my @slots = spin( \@wheel, scalar(@$population));
+#  my $slots = scalar(@$population);
+#  my @slots = map( $_*$slots, @wheel );;
   my @pool;
   my $index = 0;
   do {
@@ -83,8 +83,7 @@ sub get_pool_binary_tournament {
 
 sub spin {
    my ( $wheel, $slots ) = @_;
-   my @slots = map( $_*$slots, @$wheel );
-   return @slots;
+   return map( $_*$slots, @$wheel );
 }
 
 sub produce_offspring {
