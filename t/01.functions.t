@@ -54,4 +54,9 @@ is ( scalar( @pool ), $number_of_strings, "Pool generation" );
 @new_pop = produce_offspring( \@pool, $number_of_strings );
 
 is ( scalar( @new_pop), $number_of_strings, "New population generation");
+
+map( $fitness_of{$_}?$fitness_of{$_}:($fitness_of{$_} = max_ones( $_)), @new_pop );
+
+@newest_pop = single_generation( \@new_pop, \%fitness_of);
+is( scalar @newest_pop > 0, 1, "Testing defaults");
 done_testing();
