@@ -124,8 +124,11 @@ sub crossover {
 
 sub single_generation {
   my $population = shift || croak "No population";
-  my $fitness_of = shift || croak "No fitness";
+  my $fitness_of = shift || croak "No fitness cache";
   my $total_fitness = shift;
+  if ( !$total_fitness ) {
+    map( $total_fitness += $fitness_of->{$_}, @$population);
+  }
   my $population_size = @{$population};
   my @best = rnkeytop { $fitness_of->{$_} } 2 => @$population; # Extract elite
   my @reproductive_pool = get_pool_roulette_wheel( $population, $fitness_of, 

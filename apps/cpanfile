@@ -1,0 +1,3 @@
+requires 'version';
+requires 'Algorithm::Evolutionary::Fitness';
+requires 'Algorithm::Evolutionary::Simple';
