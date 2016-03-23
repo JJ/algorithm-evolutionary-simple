@@ -4,7 +4,7 @@ use warnings;
 use strict;
 use Carp qw(croak);
 
-our $VERSION = '0.1.2'; # Post-Sofea
+our $VERSION = '0.2'; # Probably such an increase is not guaranteed, but...
 
 use base 'Exporter';
 use Sort::Key::Top qw(rnkeytop) ;
@@ -148,7 +148,7 @@ Algorithm::Evolutionary::Simple - Run a simple, canonical evolutionary algorithm
 
 =head1 VERSION
 
-This document describes Algorithm::Evolutionary::Simple version 0.1.1a
+This document describes Algorithm::Evolutionary::Simple version 0.1.2
 
 
 =head1 SYNOPSIS

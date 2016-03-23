@@ -1,3 +1,7 @@
+2016-03-23  JJ Merelo  <jmerelo@flash>
+
+	* lib/Algorithm/Evolutionary/Simple.pm: just a few test changes to bump up version. Adds also exception test.
+
 2012-03-27  Juan J. Merelo Guervós  <jjmerelo@gmail.com>
 
 	* script/simple-EA.pl: Used the wrong file for this, so I changed
