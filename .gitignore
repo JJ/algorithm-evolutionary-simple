@@ -11,3 +11,4 @@ pm_to_blib
 **/nytprof*
 **/auto/
 cover_db/
+*.gz
