@@ -3,3 +3,11 @@ MYMETA*
 Makefile
 blib/
 pm_to_blib
+*.aux
+*.bbl
+*.blg
+*.log
+*.pdf
+**/nytprof*
+**/auto/
+cover_db/
