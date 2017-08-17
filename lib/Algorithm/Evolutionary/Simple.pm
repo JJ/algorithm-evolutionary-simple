@@ -32,7 +32,6 @@ sub max_ones {
   $count;
 }
 
-
 sub max_ones_fast {
   ($_[0] =~ tr/1/1/);
 }
@@ -56,7 +55,7 @@ sub get_pool_roulette_wheel {
       push @pool, $population->[$p];
     }
   } while ( @pool < $need );
- 
+
   @pool;
 }
 
@@ -64,7 +63,7 @@ sub get_pool_binary_tournament {
   my $population = shift || croak "No population here";
   my $fitness_of = shift || croak "need stuff evaluated";
   my $need = shift || croak "I need to know the new population size";
-  
+
   my $total_fitness = 0;
   my @pool;
   my $population_size = @$population;
@@ -77,7 +76,7 @@ sub get_pool_binary_tournament {
       push @pool, $another;
     }
   } while ( @pool < $need );
- 
+
   @pool;
 }
 
@@ -94,7 +93,6 @@ sub produce_offspring {
   for ( my $i = 0; $i < $offspring_size/2; $i++ ) {
     my $first = $pool->[rand($population_size)];
     my $second = $pool->[rand($population_size)];
-  
     push @population, crossover( $first, $second );
   }
   map( $_ = mutate($_), @population );
@@ -162,25 +160,25 @@ This document describes Algorithm::Evolutionary::Simple version 0.1.2
    $population[$i] = random_chromosome( $length);
    $fitness_of{$population[$i]} = max_ones( $population[$i] );
   }
- 
+
   my @best;
   my $generations=0;
   do {
-    my @pool; 
-    if ( $generations % 2 == 1 ) { 
+    my @pool;
+    if ( $generations % 2 == 1 ) {
       get_pool_roulette_wheel( \@population, \%fitness_of, $number_of_strings );
     } else {
      get_pool_binary_tournament( \@population, \%fitness_of, $number_of_strings );
     }
     my @new_pop = produce_offspring( \@pool, $number_of_strings/2 );
     for my $p ( @new_pop ) {
-	  if ( !$fitness_of{$p} ) {
-	    $fitness_of{$p} = max_ones( $p );
-	  }
+        if ( !$fitness_of{$p} ) {
+	   $fitness_of{$p} = max_ones( $p );
+	}
     }
     @best = rnkeytop { $fitness_of{$_} } $number_of_strings/2 => @population;
     @population = (@best, @new_pop);
-    print "Best so far $best[0] with fitness $fitness_of{$best[0]}\n";	 
+    print "Best so far $best[0] with fitness $fitness_of{$best[0]}\n";
   } while ( ( $generations++ < $number_of_generations ) and ($fitness_of{$best[0]} != $length ));
 
 
@@ -246,7 +244,7 @@ Algorithm::Evolutionary::Simple requires no configuration files or environment v
 
 =head1 DEPENDENCIES
 
-L<Sort::Key::Top> for efficient sorting. 
+L<Sort::Key::Top> for efficient sorting.
 
 =head1 SEE ALSO
 
