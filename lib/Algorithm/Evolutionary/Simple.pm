@@ -4,7 +4,7 @@ use warnings;
 use strict;
 use Carp qw(croak);
 
-our $VERSION = '0.2a'; # Probably such an increase is not guaranteed, but...
+our $VERSION = '0.3'; # Probably such an increase is not guaranteed, but...
 
 use base 'Exporter';
 use Sort::Key::Top qw(rnkeytop) ;
