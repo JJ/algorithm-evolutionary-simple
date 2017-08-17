@@ -16,23 +16,23 @@ fi
 
 if [ -z "$3" ]
 then 
-    PAR= 1
+    PAR=1
 else
     PAR=$3
 fi
 
 echo "Running with $2 for $ITERATIONS";
 
-for (( i=0; i < $ITERATIONS; i++ ))
+for (( i=0; i < ITERATIONS; i++ ))
 do
     echo "Iteration $i in dir $DIR/$i with $PAR"
-    mkdir $DIR/$i
-    touch $DIR/$i/START
-    for (( j=0; j < $PAR-1; j++ ))
+    mkdir "$DIR/$i"
+    touch "$DIR/$i/START"
+    for (( j=0; j < PAR-1; j++ ))
     do
 	echo "Starting $j"
-	perl p-peaks-dr-best.pl $DIR/$i &
+	perl p-peaks-dr-best.pl "$DIR/$i" &
     done
-    time perl p-peaks-dr-best.pl $DIR/$i 
-     touch $DIR/$i/END
+    time perl p-peaks-dr-best.pl "$DIR/$i" 
+     touch "$DIR/$i/END"
 done
