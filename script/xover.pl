@@ -34,24 +34,21 @@ __END__
 
 =head1 NAME
 
-xover.pl - A simple evolutionary algorithm that uses the functions in the library
+xover.pl - A simple benchmark for crossover in Perl
 
 
 =head1 VERSION
 
-This document describes simple-EA.pl version 0.0.3
+This is xover.
 
 
 =head1 SYNOPSIS
 
-    % chmod +x simple-EA.pl
-    % simple-EA.pl [Run with default values]
-    % simple-EA.pl 64 128 200 [Run with 64 chromosomes, population 128 for 200 generations]
+    % chmod +x xover.pl
+    % xover.pl
 
 =head1 DESCRIPTION
 
-Run a simple evolutionary algorithm using functions in the
-module. Intended mainly for teaching and modification, not for
-production. 
+A simple benchmark for the crossover function of an evolutionary algorithm.
 
 
