@@ -1,18 +1,18 @@
-# Algorithm::Evolutionary::Simple version 0.2
+# Algorithm::Evolutionary::Simple version 0.3
 
 A simple and straightforward implementation of an evolutionary algorithm. Thought for demos and also for speed.
 
-[![Build Status](https://travis-ci.org/JJ/algorithm-evolutionary-simple.svg?branch=master)](https://travis-ci.org/JJ/algorithm-evolutionary-simple)
 
 ## INSTALLATION
 
 To install this module, run the following commands:
 
+    cpanm --installdeps .
 	perl Makefile.PL
 	make
 	make test
 	make install
-	
+
 But you will probably use
 
 	cpanm Algorithm::Evolutionary::Simple
@@ -52,11 +52,14 @@ You are very welcome to use this module for research. I would be grateful, howev
 }
 ```
 
+## Acknowledgements
 
+Thanks to [Gabor Szabo](https://github.com/szabgab) for helping with
+metadata, testing and CI.
 
 ## COPYRIGHT AND LICENCE
 
-Copyright (C) 2011, JJ Merelo
+Copyright (C) 2011,2021 JJ Merelo
 
 This library is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself.
