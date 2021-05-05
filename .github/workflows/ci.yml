@@ -29,6 +29,7 @@ jobs:
         run: |
             perl -v
             cpanm --installdeps .
+            cpanm --notest Test::Perl::Critic
 
       - name: Regular tests
         run: |
