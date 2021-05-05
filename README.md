@@ -1,10 +1,10 @@
-#Algorithm::Evolutionary::Simple version 0.2
+# Algorithm::Evolutionary::Simple version 0.2
 
 A simple and straightforward implementation of an evolutionary algorithm. Thought for demos and also for speed.
 
 [![Build Status](https://travis-ci.org/JJ/algorithm-evolutionary-simple.svg?branch=master)](https://travis-ci.org/JJ/algorithm-evolutionary-simple)
 
-##INSTALLATION
+## INSTALLATION
 
 To install this module, run the following commands:
 
@@ -25,19 +25,19 @@ This module is apparently also available at the OpenSUSE repos. To install it, I
 
 	zypper install perl-Algorithm-Evolutionary-Simple
 
-or via YaST
+or via YaST.
 
-##DEPENDENCIES
+## DEPENDENCIES
 
-As shown in the Makefile.PL file; mainly Sort::Key::Top.
+As shown in the Makefile.PL file; mainly `Sort::Key::Top`.
 
-##SYNOPSIS
+## SYNOPSIS
 
 Very simple evolutionary algorithm in Perl, mainly with pedagogical
 purposes. Once installed, use the provided functions or run
 simple-EA.pl
 
-##References
+## References
 
 You are very welcome to use this module for research. I would be grateful, however, if you referenced one of our papers such as
 
@@ -54,7 +54,7 @@ You are very welcome to use this module for research. I would be grateful, howev
 
 
 
-##COPYRIGHT AND LICENCE
+## COPYRIGHT AND LICENCE
 
 Copyright (C) 2011, JJ Merelo
 
